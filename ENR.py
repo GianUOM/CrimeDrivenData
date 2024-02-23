@@ -22,3 +22,7 @@ if __name__ == "__main__":
     csv_file = "data.csv"
     output_file = "output.txt"
     process_csv(csv_file, output_file)
+
+    csv_file = "data2.csv"
+    output_file = "outputmd.txt"
+    process_csv(csv_file, output_file)
