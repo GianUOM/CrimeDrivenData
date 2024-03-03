@@ -47,6 +47,6 @@ def process_articles(csv_file, output_file):
             output.write("\n")
 
 # Example usage
-csv_file = "crimedata.csv"
+csv_file = "data_collection/times_of_malta/data.csv"
 output_file = "output.txt"
 process_articles(csv_file, output_file)

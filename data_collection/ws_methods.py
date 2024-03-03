@@ -1,6 +1,5 @@
 import os
 
-
 class color:
     WHITE = '\033[95m'
     BLUE = '\033[94m'
@@ -15,8 +14,8 @@ class color:
 class WebScraper:
 
     def __init__(self,folder_name='data'):
-        self.CHROME_DRIVER_PATH = os.path.join('..','..','chromedriver.exe')
-        self.GECKO_DRIVER_PATH  = os.path.join('..','..','geckodriver.exe')
+        self.CHROME_DRIVER_PATH = os.path.join('chromedriver.exe')
+        self.GECKO_DRIVER_PATH  = os.path.join('geckodriver.exe')
 
         if not os.path.exists(self.CHROME_DRIVER_PATH):
             print(f'{color.YELLOW} Chrome Driver Executable not found at: {os.path.abspath(self.CHROME_DRIVER_PATH)}')
@@ -25,5 +24,5 @@ class WebScraper:
             print(f'{color.YELLOW} Gecko Driver Executable not found at: {os.path.abspath(self.GECKO_DRIVER_PATH)}')
 
                                                
-        self.NEWS_IMG_PATH = os.path.join('..','..',folder_name,'img')
-        self.NEWS_PATH = os.path.join('..','..',folder_name)
+        self.NEWS_IMG_PATH = os.path.join('data_collection',folder_name,'img')
+        self.NEWS_PATH = os.path.join('data_collection',folder_name)
