@@ -11,22 +11,112 @@ def extract_entities(text):
         "Date": [],
         "Names": []
     }
+    
     doc = nlp(text)
+    
+    names = [
+    "Qormi", "Mater Dei", "Bitcoin", "Marsaxlokk", "Wuppertaler Rundschau",
+    "MacBook Pro", "Bild", "Witnesses", "Triq Lampuka", "Episode", "Mizan Online",
+    "Mosta", "St Francis Square", "Messenger", "Gew Kobba", "Guilty", "St Paul’s Bay",
+    "Gudja", "Facebook Messenger", "Papaya", "Stratton", "Moretti", "Children",
+    "Twitter", "Related Stories", "St Julian's", "Valletta", "Sta Venera", "Triq Bajjada",
+    "Marsa", "Ġħajn Żnuber", "Reliable", "Rabat", "Domestic Abuse", "Voluntary",
+    "Triq Garibaldi", "Birkirkara", "Mrieħel", "Ħamrun", "Triq", "Żejtun", "Recruiter",
+    "Teen", "Mġarr", "St Mary’s College", "Għar Lapsi", "Mediatrix Place", "Gżira",
+    "Mediapart", "Mqabba", "Lengthy", "Aġenzija Appoġġ", "Apart", "Marijuana",
+    "Recruitgiant", "Victim", "Van Driver", "Smart", "Justifiable Homicide",
+    "Journal", "Uber", "Dumbstruck", "Supportline", "St Paul's", "Proud", "Barman",
+    "Aġenzija Sapport", "Related Stories", "Daughter Hostage", "Marsascala", "Gianpula",
+    "Warning", "Tarxien", "Binance", "Paceville", "Banks", "WhatsApp", "Swieqi",
+    "Lazio", "Lecce", "Torvaianica", "Scampia", "Balocco", "Dior", "Lobby", "Graffiti",
+    "St Paul the Hermit", "Graffiti Tags", "Wied", "TBS Crew", "St Paul's Bay",
+    "Revolutionary Guards", "Blade Runner", "A St Paul's Bay", "Tiktoker", "Efforts",
+    "St Julians", "Godfather", "Triq Il-Mater Boni Consilii", "Lovin Malta",
+    "St Julian’s", "Krispy Kreme", "Covid", "Youths", "A St Paul’s Bay",
+    "Triq Sant' Antnin", "St Francis Street", "St Luke’s Hospital", "Failures",
+    "Newsbook", "Għajn Żnuber", "RELATED STORIES  "
+]
 
+    crimes = [
+        "Money-laundering", "Sanctions", "Fraud", "Anti-money laundering", "Malware", "FBI",
+        "Cybercriminals", "Constitutional case", "Fraud charges", "Drugs", "Scams", "Attacked",
+        "Knife", "Stabbing", "Murder", "Attempted murder", "Sex crimes", "Rape", "Shooting",
+        "Assault", "Plea bargain", "Gunshot", "Gang attack", "Robing", "Cocaine", "Heroin",
+        "Cannabis", "Possession", "Apartheid", "Mafia", "Ganged up", "Thief", "Armed thief",
+        "Breach", "Killing", "Hate speech", "Thieves", "Stealing", "Theft", "Organised crime",
+        "Operation", "Scam", "Corruption", "Burn", "Conspiring", "Sexually harassed",
+        "Money laundering", "Trafficker", "Abusing", "Sexually abusing", "Thefts",
+        "Snatch-and-grab", "Stabbed", "Raped", "Killed", "Child sex crimes", "Threatning",
+        "Attack", "Suicide", "Suicide bombing", "Hitting", "With a car", "Attacks",
+        "Vandalised", "Alleged inaction", "Fined", "Unfair commercial practices",
+        "Drug trafficking", "Nabbed", "Drugs dealing", "Nabbed", "Conning", "Sexual assault",
+        "Punched", "Punching", "Indecently touching", "Touching", "Beat", "Hit", "Hostage",
+        "Hostage-taker", "Kill", "Murders", "Fight", "Destroy", "Beating", "Strikes",
+        "War crimes", "War crime", "Film", "Filmed", "Filming", "Sex", "Sex video",
+        "Mental health", "Dine-and-dash", "Steals", "Dine and dash", "Sexually moslesting",
+        "Illegaly", "Groped", "Groping", "Grope", "Escape", "Attempted escape",
+        "Domestic violence", "Homicide", "Involuntary homicide", "Illegal recruiment agency",
+        "Allegations", "Defrauded", "Cyberbullying", "Art trafficking", "Abuse",
+        "Document forgery", "Trafficking", "Staging", "Death", "Starvation", "Burning",
+        "Burned", "Setting", "Fire", "Robbed", "Gangs", "Acid", "Shoot"
+    ]
+
+    locations = [
+        "Attard", "Balzan", "Il-Bidnija", "Birgu", "Birkirkara", "Mrieħel", "Birżebbuġa", 
+        "Bormla", "Dingli", "Fgura", "Furjana", "Għargħur", "Għaxaq", "Gudja", "Gżira", 
+        "Ħamrun", "Iklin", "Kalkara", "Kirkop", "Lija", "Luqa", "Marsa", "Marsaskala", 
+        "Marsaxlokk", "Mdina", "Mġarr", "Mosta", "Mqabba", "Msida", "Mtarfa", "Naxxar", 
+        "Raħal Gdid", "Pembroke", "Pietà", "Qormi", "Qrendi", "Rabat", "Safi", "San Ġwann", 
+        "Santa Luċija", "Santa Venera", "Isla", "Siġġiewi", "Sliema", "San Ġiljan", 
+        "San Pawl", "Swieqi", "Tarxien", "Xbiex", "Valletta", "Xgħajra", "Żabbar", 
+        "Żebbug", "Żejtun", "Żurrieq", "Fontana", "Għajnsielem", "Għarb", "Għasri", 
+        "Kerċem", "Munxar", "Xlendi", "Nadur", "Qala", "Rabat", "San Lawrenz", "Sannat", 
+        "Xagħra", "Xewkija", "Marsalforn", "St Paul’s Bay", "St Paul's Bay", "Paceville", 
+        "Marsascala", "Gozo", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", 
+        "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", 
+        "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", 
+        "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", 
+        "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", 
+        "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", 
+        "Congo, Democratic Republic of the", "Congo, Republic of the", "Costa Rica", 
+        "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", 
+        "Dominica", "Dominican Republic", "East Timor (Timor-Leste)", "Ecuador", "Egypt", 
+        "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", 
+        "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", 
+        "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", 
+        "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", 
+        "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", 
+        "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", 
+        "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", 
+        "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", 
+        "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", 
+        "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", 
+        "North Macedonia (Macedonia)", "Norway", "Oman", "Pakistan", "Palau", "Panama", 
+        "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", 
+        "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", 
+        "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", 
+        "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", 
+        "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", 
+        "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", 
+        "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", 
+        "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", 
+        "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Paola", 
+        "Europe", "Pozzallo", "UK", "Mellieha", "Senglea", "Cospicua", "St Julian's", "Birzebbuga", 
+        "Għajn Żnuber", "Barcelona", "Zabbar", "St Julian’s"
+    ]
+    
     for ent in doc.ents:
         if ent.label_ == "DATE":
             entities["Date"].append(ent.text)
-        elif ent.label_ == "PERSON" and ent.text.lower() not in ["qormi"] and ent.text.lower() not in ["mater dei"] and ent.text.lower() not in ["bitcoin"] and ent.text.lower() not in ["marsaxlokk"] and ent.text.lower() not in ["wuppertaler rundschau"] and ent.text.lower() not in ["macbook pro"] and ent.text.lower() not in ["bild"] and ent.text.lower() not in ["witnesses"] and ent.text.lower() not in ["triq lampuka"] and ent.text.lower() not in ["episode"] and ent.text.lower() not in ["mizan online"] and ent.text.lower() not in ["mosta"] and ent.text.lower() not in ["st francis square"] and ent.text.lower() not in ["messenger"] and ent.text.lower() not in ["gew kobba"] and ent.text.lower() not in ["guilty"] and ent.text.lower() not in ["st paul’s bay"] and ent.text.lower() not in ["gudja"] and ent.text.lower() not in ["facebook messenger"] and ent.text.lower() not in ["papaya"] and ent.text.lower() not in ["stratton"] and ent.text.lower() not in ["moretti"] and ent.text.lower() not in ["children"] and ent.text.lower() not in ["twitter"] and ent.text.lower() not in ["related stories  "] and ent.text.lower() not in ["st julian's"] and ent.text.lower() not in ["valletta"] and ent.text.lower() not in ["sta venera"] and ent.text.lower() not in ["triq bajjada"] and ent.text.lower() not in ["marsa"] and ent.text.lower() not in ["ġħajn żnuber"] and ent.text.lower() not in ["reliable"] and ent.text.lower() not in ["rabat"] and ent.text.lower() not in ["domestic abuse"] and ent.text.lower() not in ["voluntary"] and ent.text.lower() not in ["triq garibaldi"] and ent.text.lower() not in ["birkirkara"] and ent.text.lower() not in ["mrieħel"] and ent.text.lower() not in ["ħamrun"] and ent.text.lower() not in ["triq"] and ent.text.lower() not in ["żejtun"] and ent.text.lower() not in ["recruiter"] and ent.text.lower() not in ["teen"] and ent.text.lower() not in ["mġarr"] and ent.text.lower() not in ["st mary’s college"] and ent.text.lower() not in ["għar lapsi"] and ent.text.lower() not in ["mediatrix place"] and ent.text.lower() not in ["gżira"] and ent.text.lower() not in ["mediapart"] and ent.text.lower() not in ["mqabba"] and ent.text.lower() not in ["lengthy"] and ent.text.lower() not in ["aġenzija appoġġ"] and ent.text.lower() not in ["apart"] and ent.text.lower() not in ["marijuana"] and ent.text.lower() not in ["recruitgiant"] and ent.text.lower() not in ["victim"] and ent.text.lower() not in ["van driver"] and ent.text.lower() not in ["smart"] and ent.text.lower() not in ["justifiable homicide"] and ent.text.lower() not in ["journal"] and ent.text.lower() not in ["uber"] and ent.text.lower() not in ["dumbstruck"] and ent.text.lower() not in ["supportline"] and ent.text.lower() not in ["st paul's"] and ent.text.lower() not in ["proud"] and ent.text.lower() not in ["barman"] and ent.text.lower() not in ["aġenzija sapport"] and ent.text.lower() not in ["related stories"] and ent.text.lower() not in ["daughter hostage"] and ent.text.lower() not in ["marsascala"] and ent.text.lower() not in ["gianpula"] and ent.text.lower() not in ["warning"] and ent.text.lower() not in ["tarxien"] and ent.text.lower() not in ["binance"] and ent.text.lower() not in ["paceville"] and ent.text.lower() not in ["banks"] and ent.text.lower() not in ["whatsapp"] and ent.text.lower() not in ["swieqi"] and ent.text.lower() not in ["lazio"] and ent.text.lower() not in ["lecce"] and ent.text.lower() not in ["torvaianica"] and ent.text.lower() not in ["scampia"] and ent.text.lower() not in ["balocco"] and ent.text.lower() not in ["dior"] and ent.text.lower() not in ["lobby"] and ent.text.lower() not in ["graffiti"] and ent.text.lower() not in ["st paul the hermit"] and ent.text.lower() not in ["graffiti tags"] and ent.text.lower() not in ["wied"] and ent.text.lower() not in ["tbs crew"] and ent.text.lower() not in ["st paul's bay"] and ent.text.lower() not in ["revolutionary guards"] and ent.text.lower() not in ["blade runner"] and ent.text.lower() not in ["a st paul's bay"] and ent.text.lower() not in ["tiktoker"] and ent.text.lower() not in ["efforts"] and ent.text.lower() not in ["st julians"] and ent.text.lower() not in ["godfather"] and ent.text.lower() not in ["triq il-mater boni consilii"] and ent.text.lower() not in ["lovin malta"] and ent.text.lower() not in ["st julian’s"] and ent.text.lower() not in ["krispy kreme"] and ent.text.lower() not in ["covid"] and ent.text.lower() not in ["youths"] and ent.text.lower() not in ["a st paul’s bay"] and ent.text.lower() not in ["triq sant' antnin"] and ent.text.lower() not in ["st francis street"] and ent.text.lower() not in ["st luke’s hospital"] and ent.text.lower() not in ["failures"] and ent.text.lower() not in ["newsbook"] and ent.text.lower() not in ["għajn żnuber"]:
+        elif ent.label_ == "PERSON" and ent.text.lower() not in [word.lower() for word in names]:
             entities["Names"].append(ent.text)
     
     # Crime extraction
-    crime_keywords = ["money-laundering", "sanctions", "fraud", "anti-money laundering", "malware", "FBI", "cybercriminals", "constitutional case", "fraud charges", "drugs", "scams", "attacked", "knife", "stabbing", "murder", "attempted murder", "sex crimes", "rape", "shooting", "assault", "plea bargain", "gunshot", "gang attack", "robing", "cocaine", "heroin", "cannabis", "possession", "apartheid", "Mafia", "ganged up", "thief", "armed thief", "breach", "killing", "mafia", "hate speech", "thieves", "stealing", "theft", "organised crime", "operation", "scam", "corruption", "burn", "conspiring", "sexually harassed", "money laundering", "trafficker", "abusing", "sexually abusing", "thefts", "snatch-and-grab", "stabbed", "raped", "killed", "child sex crimes", "threatning", "attack", "suicide", "suicide bombing", "hitting", "with a car", "attacks", "vandalised", "alleged inaction", "fined", "unfair commercial practices","drug trafficking", "nabbed", "drugs dealing", "nabbed", "conning", "sexual assault", "punched", "punching", "indecently touching", "touching", "beat", "hit", "hostage", "hostage-taker", "kill", "murders", "fight", "destroy", "beating", "strikes", "war crimes", "war crime", "film", "filmed", "filming", "sex", "sex video", "mental health", "dine-and-dash", "steals", "dine and dash", "sexually moslesting", "illegaly", "groped", "groping", "grope", "escape", "attempted escape", "domestic violence", "homicide", "involuntary homicide", "illegal recruiment agency", "allegations", "defrauded", "cyberbullying", "art trafficking", "abuse", "document forgery", "trafficking", "staging", "death", "starvation", "burning", "burned", "setting", "fire", "robbed", "gangs", "acid", "shoot"]
-    for keyword in crime_keywords:
-        if re.search(r'\b' + re.escape(keyword) + r'\b', text, re.IGNORECASE):
-            entities["Crime"].append(keyword)
+    for crime in crimes:
+        if re.search(r'\b' + re.escape(crime) + r'\b', text, re.IGNORECASE):
+            entities["Crime"].append(crime)
     
-    # Location extraction (simplified for demonstration)
-    locations = ["Attard", "Balzan", "Il-Bidnija", "Birgu", "Birkirkara", "Mrieħel", "Birżebbuġa", "Bormla", "Dingli", "Fgura", "Furjana", "Għargħur", "Għaxaq", "Gudja", "Gżira", "Ħamrun", "Iklin", "Kalkara", "Kirkop", "Lija", "Luqa", "Marsa", "Marsaskala", "Marsaxlokk", "Mdina", "Mġarr", "Mosta", "Mqabba", "Msida", "Mtarfa", "Naxxar", "Raħal Gdid", "Pembroke", "Pietà", "Qormi", "Qrendi", "Rabat", "Safi", "San Ġwann", "Santa Luċija", "Santa Venera", "Isla", "Siġġiewi", "Sliema", "San Ġiljan", "San Pawl", "Swieqi", "Tarxien", "Xbiex", "Valletta", "Xgħajra", "Żabbar", "Żebbug", "Żejtun", "Żurrieq", "Fontana", "Għajnsielem", "Għarb", "Għasri", "Kerċem", "Munxar", "Xlendi", "Nadur", "Qala", "Rabat", "San Lawrenz", "Sannat", "Xagħra", "Xewkija", "Marsalforn", "St Paul’s Bay","St Paul's Bay", "Paceville", "Marsascala", "Gozo", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor (Timor-Leste)", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia (Macedonia)", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Paola", "Europe", "Pozzallo", "UK", "Mellieha", "Senglea", "Cospicua", "St Julian's", "Birzebbuga", "Għajn Żnuber", "Barcelona", "Zabbar", "St Julian’s"]
+    # Location extraction
     for location in locations:
         if re.search(r'\b' + re.escape(location) + r'\b', text, re.IGNORECASE):
             entities["Location"].append(location)
@@ -48,5 +138,11 @@ def process_articles(csv_file, output_file):
 
 # Example usage
 csv_file = "data_collection/times_of_malta/data.csv"
-output_file = "output.txt"
-process_articles(csv_file, output_file)
+#output_file = "output.txt" # Old output left for comparison's sake
+output_file = "output2.txt"
+
+def main():    
+    process_articles(csv_file, output_file)
+    
+if __name__ == "__main__":
+    main()
