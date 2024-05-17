@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Common Places for {{ crime }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="chart-container">
+        <h1>Most Common Places for {{ crime }}</h1>
+        <canvas id="crime-location-chart"></canvas>
+    </div>
+    <button onclick="window.location.href='/'">Back</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.get('/api/locations_by_crime', { crime: "{{ crime }}" }, function(data) {
+                var labels = data.map(function(item) { return item[0]; });
+                var counts = data.map(function(item) { return item[1]; });
+
+                var ctx = document.getElementById('crime-location-chart').getContext('2d');
+                var crimeLocationChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Occurrences',
+                            data: counts,
+                            backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }).fail(function() {
+                console.error("Error fetching data from /api/locations_by_crime");
+            });
+        });
+    </script>
+</body>
+</html>
