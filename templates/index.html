@@ -4,23 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Most Common Crimes</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Most Common Crimes</h1>
-    <canvas id="crime-chart"></canvas>
+    <div class="chart-container">
+        <h1>Most Common Crimes</h1>
+        <canvas id="crime-chart"></canvas>
+    </div>
+    <div class="chart-container">
+        <h1>Places with Most Crimes</h1>
+        <canvas id="location-chart"></canvas>
+    </div>
+    <div class="chart-container">
+        <h2>Crimes in Selected Location</h2>
+        <ul id="crime-list" class="crime-list"></ul>
+    </div>
+    <div class="chart-container">
+        <h2>Places with Selected Crime</h2>
+        <ul id="location-list" class="crime-list"></ul>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Fetch and display crime data
             $.get('/api/most_common_crimes', function(data) {
-                // Extract labels and counts from the data
                 var labels = data.map(function(item) { return item[0]; });
                 var counts = data.map(function(item) { return item[1]; });
 
-                // Create a bar chart
                 var ctx = document.getElementById('crime-chart').getContext('2d');
-                var chart = new Chart(ctx, {
+                var crimeChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
@@ -34,15 +48,95 @@
                     },
                     options: {
                         scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        onClick: function(event, elements) {
+                            if (elements.length > 0) {
+                                var index = elements[0].index;
+                                var crime = this.data.labels[index];
+                                fetchLocationsByCrime(crime);
+                            }
                         }
                     }
                 });
+            }).fail(function() {
+                console.error("Error fetching data from /api/most_common_crimes");
             });
+
+            // Fetch and display location data
+            $.get('/api/most_common_locations', function(data) {
+                var labels = data.map(function(item) { return item[0]; });
+                var counts = data.map(function(item) { return item[1]; });
+
+                var ctx = document.getElementById('location-chart').getContext('2d');
+                var locationChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Occurrences',
+                            data: counts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        onClick: function(event, elements) {
+                            if (elements.length > 0) {
+                                var index = elements[0].index;
+                                var location = this.data.labels[index];
+                                fetchCrimesByLocation(location);
+                            }
+                        }
+                    }
+                });
+            }).fail(function() {
+                console.error("Error fetching data from /api/most_common_locations");
+            });
+
+            function fetchCrimesByLocation(location) {
+                $.get('/api/crimes_by_location', { location: location }, function(data) {
+                    var crimeList = $('#crime-list');
+                    crimeList.empty();
+
+                    var uniqueCrimes = new Set(data.map(function(item) { return item[0]; }));
+                    if (uniqueCrimes.size > 0) {
+                        uniqueCrimes.forEach(function(crime) {
+                            crimeList.append('<li>' + crime + '</li>');
+                        });
+                    } else {
+                        crimeList.append('<li>No crimes reported in this location.</li>');
+                    }
+                }).fail(function() {
+                    console.error("Error fetching data from /api/crimes_by_location");
+                });
+            }
+
+            function fetchLocationsByCrime(crime) {
+                $.get('/api/locations_by_crime', { crime: crime }, function(data) {
+                    var locationList = $('#location-list');
+                    locationList.empty();
+
+                    var uniqueLocations = new Set(data.map(function(item) { return item[0]; }));
+                    if (uniqueLocations.size > 0) {
+                        uniqueLocations.forEach(function(location) {
+                            locationList.append('<li>' + location + '</li>');
+                        });
+                    } else {
+                        locationList.append('<li>No locations reported for this crime.</li>');
+                    }
+                }).fail(function() {
+                    console.error("Error fetching data from /api/locations_by_crime");
+                });
+            }
         });
     </script>
 </body>
