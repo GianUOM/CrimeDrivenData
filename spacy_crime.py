@@ -47,7 +47,7 @@ def extract_entities(text):
         "Operation", "Scam", "Corruption", "Burn", "Conspiring", "Sexually harassed",
         "Money laundering", "Trafficker", "Abusing", "Sexually abusing", "Thefts",
         "Snatch-and-grab", "Stabbed", "Raped", "Killed", "Child sex crimes", "Threatning",
-        "Attack", "Suicide", "Suicide bombing", "Hitting", "With a car", "Attacks",
+        "Attack", "Suicide", "Suicide bombing", "arsonist", "Arsonist" "Hitting", "With a car", "Attacks",
         "Vandalised", "Alleged inaction", "Fined", "Unfair commercial practices",
         "Drug trafficking", "Nabbed", "Drugs dealing", "Nabbed", "Conning", "Sexual assault",
         "Punched", "Punching", "Indecently touching", "Touching", "Beat", "Hit", "Hostage",
