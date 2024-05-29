@@ -3,13 +3,15 @@ import sqlite3
 
 app = Flask(__name__)
 
+database_path = "Crime.db"
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/api/most_common_crimes')
 def most_common_crimes():
-    connection = sqlite3.connect('Crime.db')
+    connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     cursor.execute("SELECT title, COUNT(*) AS count FROM crimes GROUP BY title ORDER BY count DESC LIMIT 10")
     data = cursor.fetchall()
@@ -18,7 +20,7 @@ def most_common_crimes():
 
 @app.route('/api/most_common_locations')
 def most_common_locations():
-    connection = sqlite3.connect('Crime.db')
+    connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     cursor.execute("SELECT name, COUNT(*) AS count FROM locations GROUP BY name ORDER BY count DESC LIMIT 10")
     data = cursor.fetchall()
@@ -28,7 +30,7 @@ def most_common_locations():
 @app.route('/api/crimes_by_location', methods=['GET'])
 def crimes_by_location():
     location = request.args.get('location')
-    connection = sqlite3.connect('Crime.db')
+    connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     cursor.execute("""
         SELECT c.title
@@ -43,7 +45,7 @@ def crimes_by_location():
 @app.route('/api/locations_by_crime', methods=['GET'])
 def locations_by_crime():
     crime = request.args.get('crime')
-    connection = sqlite3.connect('Crime.db')
+    connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     cursor.execute("""
         SELECT l.name, COUNT(*) AS count
@@ -61,7 +63,7 @@ def locations_by_crime():
 @app.route('/api/crimes_in_location', methods=['GET'])
 def crimes_in_location():
     location = request.args.get('location')
-    connection = sqlite3.connect('Crime.db')
+    connection = sqlite3.connect(database_path)
     cursor = connection.cursor()
     cursor.execute("""
         SELECT c.title, COUNT(*) AS count
