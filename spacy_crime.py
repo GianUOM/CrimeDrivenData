@@ -3,7 +3,7 @@ import re
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
-# Function to extract entities related to crime, location, and date
+
 def extract_entities(text):
     entities = {
         "Crime": [],

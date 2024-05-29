@@ -28,8 +28,6 @@ def get_img_ext(img_link):
         return '.png'
     else: return ""
 
-
-        
 service = webdriver.ChromeService()
 service = webdriver.ChromeService(executable_path=m.CHROME_DRIVER_PATH)
 driver = webdriver.Chrome(service=service)
@@ -92,47 +90,9 @@ for pg_idx in range(num_pgs+1):
             #Get URL
             url = driver.current_url
 
-            ##Get Thumbnail + Images
-            #img_links = [img for img in driver.find_elements(By.XPATH,'//*[@id="observer"]/main/article/div[2]/div/*/img') +\
-            #                            driver.find_elements(By.XPATH,'//*[@id="article-head"]/div/picture/img')]
-            #
-            #captions = ""
-            #images   = ""
-
-            ##Write images to disk
-            #for img_link in img_links:
-            #    img_src   = img_link.get_attribute('src')         #Get source
-            #    captions  += img_link.get_attribute('alt') + '☺'  #Append current caption
-            #    img_ext  = get_img_ext(img_src)                    #Get image extension
-            #    img_name = f'img{str(img_count).zfill(5)}'+img_ext #Get image name
-            #    images  += img_name + ','                          #Append image name to list
-            #    img_data = requests.get(img_src).content           #Download image
-            #    img_count += 1
-            #    #Write current image to disk
-            #    with open(os.path.join(m.NEWS_IMG_PATH,img_name),'wb') as f:
-            #        f.write(img_data)
-
             #Get Body
             text_content = driver.find_element(By.XPATH,'//*[@id="observer"]/main/article/div[2]/div')
             body = " ".join(p.text for p in text_content.find_elements(By.TAG_NAME,'p'))
-
-            ##Get Date of Article
-            #date = driver.find_element(By.XPATH,'//*[@id="article-head"]/div/div[2]/div[1]/span[1]').text
-
-            #if 'hour' in date:
-            #    current_hr = datetime.now().hour
-            #    article_hr = re.match(r'(.*) hour(s?) ago',date).group(1)
-
-            #    date = datetime.now()
-            #    if int(current_hr) < int(article_hr):
-            #        date -= timedelta(days=1)
-            #elif 'minute' in date:
-            #    date = datetime.now()
-            #else:                               #vvv This format is only specific to ChromeDriver
-            #    date = datetime.strptime(date,"%B %d, %Y") 
-
-            #date = date.strftime('%d-%m-%Y')
-            #print(f'E ')
             
             #Add row
             data.append([title,author,body,url])
