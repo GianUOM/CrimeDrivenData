@@ -72,7 +72,7 @@ def insert_data(cursor, entities, article_id):
         if not existing_name:
             cursor.execute("INSERT INTO people (name, article_id) VALUES (?, ?)", (name, article_id))
 
-connection = sqlite3.connect(os.path.join('Crime2.db'))
+connection = sqlite3.connect(os.path.join('Crime.db'))
 cursor = connection.cursor()
 
 create_tables(cursor)
